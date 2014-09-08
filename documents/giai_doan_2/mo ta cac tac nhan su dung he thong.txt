@@ -1,0 +1,43 @@
+Bản mô tả hoạt động các tác nhân sử dụng hệ thông POS 
+1. Bồi bàn
+	+ tìm bàn trống
+	+ đặt thực đơn:
+		- ghi các món, kèm chú thích
+		- chỉnh sửa thực đơn, thêm món, hủy món
+		- cập nhật trạng thái bàn 
+		- gửi thông tin về cho server 
+	+ theo dõi bảng các món ăn vừa hoàn thành và đưa tới bàn tương ứng
+	+ yêu cầu thanh toán cho khách hàng:
+		- gửi yêu cầu in hóa đơn 
+		- nếu thanh toán xong, nhận tiền, đưa về quầy thu ngân
+		- cập nhật trạng thái của bàn
+	
+2. Nhà bếp
+	- nhận yêu cầu đặt món từ server, thông tin cần thiết cho mỗi yêu cầu là 
+		tên món + ghi chú + bàn 
+		- chuẩn bị món
+		- thông báo món hoàn thành lại cho hệ thống
+	- quản lí món ăn: 
+		- thêm món mới
+		- hủy món, thông báo tạm thời hết 
+
+
+
+3. Nhân viên quản lí + thu ngân
+	- quản lí tài khoản của nhân viên
+		- thêm bớt xóa sửa 	
+		- phân quyền người dùng 
+	- nhận thông báo thanh toán ( từ app của bồi bàn )
+		- in hóa đơn
+		- hiển thị thông báo để theo dõi quá trình thanh toán
+	- nhận tiền thanh toán
+		- cập nhật thông tin
+			- thông tin trạng thái của bàn (trống/ đã sử dụng)
+			- thông tin hóa đơn 
+	- cập nhật trạng thái của bàn (đặt bàn ?)
+	- thống kê cửa hàng
+		- doanh thu trong ngày, tháng 
+		- món hot, món ít chuộng
+		- so sánh 
+		...
+
