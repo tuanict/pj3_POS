@@ -1,4 +1,4 @@
-package com.example.pos;
+package com.pj3.pos;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
