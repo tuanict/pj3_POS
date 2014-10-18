@@ -28,7 +28,7 @@ public class EmployeeHelper extends SQLiteOpenHelper {
 			+ TABLE_EMPLOYEE
 			+ "("
 			+ COLUMN_ID
-			+ " integer primary key autoincrement, "
+			+ " INT primary key autoincrement, "
 			+ COLUMN_NAME
 			+ "VARCHAR(45) NOT NULL, "
 			+ COLUMN_EMAIL
@@ -44,7 +44,7 @@ public class EmployeeHelper extends SQLiteOpenHelper {
 			+ "CONSTRAINT e_POSITION_p_id FOREIGN KEY (e_POSITION_p_id) REFERENCES POSITION(p_id)";
 	
 	private static final String DATABASE_NAME = "employee.db";
-	  private static final int  DATABASE_VERSION = 1;
+	private static final int  DATABASE_VERSION = 1;
 	
 	public EmployeeHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
