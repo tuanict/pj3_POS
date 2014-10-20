@@ -15,6 +15,34 @@ public class Employee {
 	private String e_image;
 	private int e_phone_number;
 	private int POSITION_p_id;
+	
+	
+	
+	public Employee(int e_id, String e_name, String e_email, String e_pass,
+			String e_image, int e_phone_number, int pOSITION_p_id) {
+		super();
+		this.e_id = e_id;
+		this.e_name = e_name;
+		this.e_email = e_email;
+		this.e_pass = e_pass;
+		this.e_image = e_image;
+		this.e_phone_number = e_phone_number;
+		POSITION_p_id = pOSITION_p_id;
+	}
+	
+	
+	public Employee(String e_name, String e_email, String e_pass,
+			String e_image, int e_phone_number, int pOSITION_p_id) {
+		super();
+		this.e_name = e_name;
+		this.e_email = e_email;
+		this.e_pass = e_pass;
+		this.e_image = e_image;
+		this.e_phone_number = e_phone_number;
+		POSITION_p_id = pOSITION_p_id;
+	}
+
+
 	public int getE_id() {
 		return e_id;
 	}

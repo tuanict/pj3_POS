@@ -13,6 +13,29 @@ public class Menu {
 	private int m_price;
 	private String m_image;
 	private Boolean m_status;
+	
+	
+	
+	public Menu(int m_food_id, String m_name, int m_price, String m_image,
+			Boolean m_status) {
+		super();
+		this.m_food_id = m_food_id;
+		this.m_name = m_name;
+		this.m_price = m_price;
+		this.m_image = m_image;
+		this.m_status = m_status;
+	}
+	
+	
+	public Menu(String m_name, int m_price, String m_image, Boolean m_status) {
+		super();
+		this.m_name = m_name;
+		this.m_price = m_price;
+		this.m_image = m_image;
+		this.m_status = m_status;
+	}
+
+
 	public int getM_food_id() {
 		return m_food_id;
 	}

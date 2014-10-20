@@ -13,6 +13,21 @@ public class Bill {
 	private int b_id;
 	private int b_count;
 	private Date b_time_stamp;
+	
+	
+	public Bill(int b_id, int b_count, Date b_time_stamp) {
+		super();
+		this.b_id = b_id;
+		this.b_count = b_count;
+		this.b_time_stamp = b_time_stamp;
+	}
+	
+	public Bill(int b_count, Date b_time_stamp) {
+		super();
+		this.b_count = b_count;
+		this.b_time_stamp = b_time_stamp;
+	}
+
 	public int getB_id() {
 		return b_id;
 	}
