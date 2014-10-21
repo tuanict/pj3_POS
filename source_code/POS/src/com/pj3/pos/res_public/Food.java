@@ -7,16 +7,18 @@ package com.pj3.pos.res_public;
  * @author LÍCÙng
  *
  */
-public class Menu {
+public class Food {
 	private int m_food_id;
 	private String m_name;
 	private int m_price;
 	private String m_image;
 	private Boolean m_status;
 	
+	public Food(){
+		
+	}
 	
-	
-	public Menu(int m_food_id, String m_name, int m_price, String m_image,
+	public Food(int m_food_id, String m_name, int m_price, String m_image,
 			Boolean m_status) {
 		super();
 		this.m_food_id = m_food_id;
@@ -27,7 +29,7 @@ public class Menu {
 	}
 	
 	
-	public Menu(String m_name, int m_price, String m_image, Boolean m_status) {
+	public Food(String m_name, int m_price, String m_image, Boolean m_status) {
 		super();
 		this.m_name = m_name;
 		this.m_price = m_price;

@@ -3,6 +3,7 @@
  */
 package com.pj3.pos.sqlite;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,8 @@ import android.util.Log;
 
 import com.pj3.pos.res_public.Bill;
 import com.pj3.pos.res_public.Employee;
-import com.pj3.pos.res_public.Menu;
+import com.pj3.pos.res_public.Food;
+import com.pj3.pos.res_public.Order;
 
 /**
  * @author LÍCÙng
@@ -22,9 +24,25 @@ import com.pj3.pos.res_public.Menu;
  */
 public class DatabaseSource implements SqliteAPIs{
 	DatabaseHelper dHelper;
-	
+	File billTem;
+	public static int billTempId = 0;
+	public static final String FILENAME = "BillTemp.json";
 	public DatabaseSource(Context context){
 		dHelper = new DatabaseHelper(context);
+		
+		//Create file tamporary
+		String[] files = context.getFilesDir().list();
+		boolean ok = true;
+		for(String file : files){
+			if(file.equals(FILENAME)){
+				ok = false;
+				break;
+			}
+		}
+		
+		if(ok) billTem = new File(context.getFilesDir(), FILENAME);
+			
+		
 	}
 	@Override
 	public int createUser(Employee user) {
@@ -188,8 +206,8 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public int createFood(Menu menu) {
-		List<Menu> menus = this.getAllFood();
+	public int createFood(Food menu) {
+		List<Food> menus = this.getAllFood();
 		int size = menus.size();
 		int count = 0;
 		while(count < size){
@@ -211,7 +229,7 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public boolean updateMenu(Menu menu) {
+	public boolean updateMenu(Food menu) {
 		SQLiteDatabase db = dHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		
@@ -232,7 +250,7 @@ public class DatabaseSource implements SqliteAPIs{
 
 	@Override
 	public boolean changeStatusFood(int foodId, boolean status) {
-		Menu menu = getFood(foodId);
+		Food menu = getFood(foodId);
 		if(menu == null)
 			return false;
 		menu.setM_status(status);
@@ -240,7 +258,7 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public Menu getFood(int foodId) {
+	public Food getFood(int foodId) {
 		SQLiteDatabase db = dHelper.getReadableDatabase();
 		String query = "SELECT * FROM " + dHelper.TABLE_MENU + "WHERE "
 				+ dHelper.COLUMN_M_ID + " = " + foodId;
@@ -250,7 +268,7 @@ public class DatabaseSource implements SqliteAPIs{
 		if(c != null)
 			c.moveToFirst();
 		
-		Menu menu = new Menu();
+		Food menu = new Food();
 		menu.setM_food_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_ID)));
 		menu.setM_image(c.getString(c.getColumnIndex(dHelper.COLUMN_M_IMAGE)));
 		menu.setM_name(c.getString(c.getColumnIndex(dHelper.COLUMN_M_NAME)));
@@ -261,8 +279,8 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public List<Menu> getAllFood() {
-		List<Menu> menus = new ArrayList<Menu>();
+	public List<Food> getAllFood() {
+		List<Food> menus = new ArrayList<Food>();
 		String query = "SELECT * FROM " + dHelper.TABLE_MENU;
 		Log.e(dHelper.LOG,query);
 		
@@ -272,7 +290,7 @@ public class DatabaseSource implements SqliteAPIs{
 		// looping through all rows and adding to list
 		if(c.moveToFirst()){
 			do{
-				Menu menu = new Menu();
+				Food menu = new Food();
 				menu.setM_food_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_ID)));
 				menu.setM_image(c.getString(c.getColumnIndex(dHelper.COLUMN_M_IMAGE)));
 				menu.setM_name(c.getString(c.getColumnIndex(dHelper.COLUMN_M_NAME)));
@@ -321,13 +339,14 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public int createBillTemp(Bill bill) {
-		// TODO Auto-generated method stub
+	public int createBillTemp(Order order) {
+		order.setOrderId(billTempId);
+		
 		return 0;
 	}
 
 	@Override
-	public boolean updateBillTemp(Bill bill) {
+	public boolean updateBillTemp(Order order) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -339,7 +358,7 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public Bill getBillTemp(int billId) {
+	public Order getBillTemp(int billId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

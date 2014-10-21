@@ -14,6 +14,9 @@ public class Bill {
 	private int b_count;
 	private Date b_time_stamp;
 	
+	public Bill(){
+		
+	}
 	
 	public Bill(int b_id, int b_count, Date b_time_stamp) {
 		super();

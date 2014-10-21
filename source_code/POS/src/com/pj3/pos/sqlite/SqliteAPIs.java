@@ -7,7 +7,8 @@ import java.util.List;
 
 import com.pj3.pos.res_public.Bill;
 import com.pj3.pos.res_public.Employee;
-import com.pj3.pos.res_public.Menu;
+import com.pj3.pos.res_public.Food;
+import com.pj3.pos.res_public.Order;
 
 /**
  * @author LÍCÙng
@@ -18,7 +19,7 @@ public interface SqliteAPIs {
 	/**
 	 * Create user
 	 * @user user will be created
-	 * @return id of user is created
+	 * @return id of user is created if success or -1 if fail
 	 */
 	public int createUser(Employee user);
 	
@@ -69,16 +70,16 @@ public interface SqliteAPIs {
 	/**
 	 * Create new food in menu
 	 * @param menu
-	 * @return id of new food
+	 * @return id of new food if success or -1 if fail
 	 */
-	public int createFood(Menu menu);
+	public int createFood(Food menu);
 	
 	/**
 	 * Update menu 
 	 * @param menu
 	 * @return true if success or false if fail
 	 */
-	public  boolean updateMenu(Menu menu);
+	public  boolean updateMenu(Food menu);
 	
 	/**
 	 * Change status of food
@@ -93,13 +94,13 @@ public interface SqliteAPIs {
 	 * @param foodId
 	 * @return return Food
 	 */
-	public Menu getFood(int foodId);
+	public Food getFood(int foodId);
 	
 	/**
 	 * Get all food in menu
 	 * @return list food
 	 */
-	public List<Menu> getAllFood();
+	public List<Food> getAllFood();
 	
 	//BILL ACTION 
 	/**
@@ -116,20 +117,26 @@ public interface SqliteAPIs {
 	 */
 	public Bill getBill(int billId);
 	
+	/**
+	 * get all  bill on server
+	 * @return list all bill
+	 */
+	public List<Bill> getAllBill();
+	
 	//BILL ACTION TEMPORARY
 	/**
 	 * Create bill temporary
 	 * @param bill
 	 * @return id of new bill
 	 */
-	public int createBillTemp(Bill bill);
+	public int createBillTemp(Order order);
 	
 	/**
 	 * Update bill temporary
 	 * @param bill
 	 * @return true if success or false if fail
 	 */
-	public boolean updateBillTemp(Bill bill);
+	public boolean updateBillTemp(Order order);
 	
 	/**
 	 * Delete bill temporary
@@ -143,6 +150,6 @@ public interface SqliteAPIs {
 	 * @param billId
 	 * @return bill temporary 
 	 */
-	public Bill getBillTemp(int billId);
+	public Order getBillTemp(int billId);
 	
 }

@@ -16,7 +16,9 @@ public class Employee {
 	private int e_phone_number;
 	private int POSITION_p_id;
 	
-	
+	public Employee(){
+		
+	}
 	
 	public Employee(int e_id, String e_name, String e_email, String e_pass,
 			String e_image, int e_phone_number, int pOSITION_p_id) {
