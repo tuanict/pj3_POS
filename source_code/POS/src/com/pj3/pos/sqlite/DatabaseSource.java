@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import android.util.Log;
 import com.pj3.pos.res_public.Bill;
 import com.pj3.pos.res_public.Employee;
 import com.pj3.pos.res_public.Food;
+import com.pj3.pos.res_public.FoodTemprary;
 import com.pj3.pos.res_public.Order;
 
 /**
@@ -418,6 +420,7 @@ public class DatabaseSource implements SqliteAPIs{
 			file.write(root.toJSONString());
 			file.flush();
 			file.close();
+			return true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -433,13 +436,66 @@ public class DatabaseSource implements SqliteAPIs{
 
 	@Override
 	public boolean deleteBillTemp(int billId) {
-		// TODO Auto-generated method stub
+		JSONObject root = new JSONObject();
+		try {
+			root = (JSONObject) parser.parse(new FileReader(billTem));
+			root.remove(""+billId);
+			FileWriter file = new FileWriter(billTem);
+			file.write(root.toJSONString());
+			file.flush();
+			file.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public Order getBillTemp(int billId) {
-		// TODO Auto-generated method stub
+		JSONObject root = new JSONObject();
+		try {
+			root = (JSONObject) parser.parse(new FileReader(billTem));
+			Order order = new Order();
+			JSONObject object = (JSONObject) root.get("" + billId);
+			order.setOrderId(billId);
+			order.setTableId((Integer) object.get("tableId"));
+			order.setCount((Integer) object.get("count"));
+			JSONArray foods = (JSONArray) object.get("foods");
+			int size = foods.size();
+			
+			List<FoodTemprary> foList = new ArrayList<FoodTemprary>();
+			for(int i = 0; i < size; i++){
+				FoodTemprary fo = new FoodTemprary();
+				JSONObject foodTemp = new JSONObject();
+				foodTemp = (JSONObject) foods.get(i);
+				fo.setFoodId((Integer) foodTemp.get("foodId"));
+				fo.setCount((Integer) foodTemp.get("foodCount"));
+				fo.setNote((String) foodTemp.get("note"));
+				
+				foList.add(fo);
+			}
+			
+			order.setFoodTemp(foList);
+			return order;
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	

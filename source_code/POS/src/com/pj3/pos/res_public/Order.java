@@ -15,7 +15,9 @@ public class Order {
 	private List<FoodTemprary> foodTemp;
 	private int count;
 	
-	
+	public Order(){
+		
+	}
 	
 	public Order(int tableId, List<FoodTemprary> foodTemp, int count) {
 		super();
