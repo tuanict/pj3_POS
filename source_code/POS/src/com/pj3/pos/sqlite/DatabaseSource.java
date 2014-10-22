@@ -4,8 +4,17 @@
 package com.pj3.pos.sqlite;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -27,8 +36,13 @@ public class DatabaseSource implements SqliteAPIs{
 	File billTem;
 	public static int billTempId = 0;
 	public static final String FILENAME = "BillTemp.json";
+	
+	JSONParser parser;
 	public DatabaseSource(Context context){
 		dHelper = new DatabaseHelper(context);
+		
+		//Init json object
+		parser = new JSONParser();
 		
 		//Create file tamporary
 		String[] files = context.getFilesDir().list();
@@ -39,9 +53,7 @@ public class DatabaseSource implements SqliteAPIs{
 				break;
 			}
 		}
-		
 		if(ok) billTem = new File(context.getFilesDir(), FILENAME);
-			
 		
 	}
 	@Override
@@ -341,13 +353,81 @@ public class DatabaseSource implements SqliteAPIs{
 	@Override
 	public int createBillTemp(Order order) {
 		order.setOrderId(billTempId);
-		
-		return 0;
+		JSONObject root = new JSONObject();
+		try {
+			root = (JSONObject) parser.parse(new FileReader(billTem));
+			JSONObject newBill = new JSONObject();
+			newBill.put("orderId", order.getOrderId());
+			newBill.put("tableId", order.getTableId());
+			newBill.put("count", order.getCount());
+			
+			JSONArray foods = new JSONArray();
+			int size = order.getFoodTemp().size();
+			for(int i = 0; i < size; i++){
+				JSONObject food = new JSONObject();
+				food.put("foodId", order.getFoodTemp().get(i).getFoodId());
+				food.put("foodCount", order.getFoodTemp().get(i).getCount());
+				food.put("note", order.getFoodTemp().get(i).getNote());
+				
+				foods.add(food);
+			}
+			newBill.put("foods", foods);
+			root.put(""+order.getOrderId(), newBill);
+			
+			FileWriter file = new FileWriter(billTem);
+			file.write(root.toJSONString());
+			file.flush();
+			file.close();
+			billTempId++;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return order.getOrderId();
 	}
 
 	@Override
 	public boolean updateBillTemp(Order order) {
-		// TODO Auto-generated method stub
+		JSONObject root = new JSONObject();
+		try {
+			root = (JSONObject) parser.parse(new FileReader(billTem));
+			JSONObject update = (JSONObject) root.get(""+order.getOrderId());
+			update.put("orderId", order.getOrderId());
+			update.put("tableId", order.getTableId());
+			update.put("count", order.getCount());
+			JSONArray foods = new JSONArray();
+			int size = order.getFoodTemp().size();
+			for(int i = 0; i < size; i++){
+				JSONObject food = new JSONObject();
+				food.put("foodId", order.getFoodTemp().get(i).getFoodId());
+				food.put("foodCount", order.getFoodTemp().get(i).getCount());
+				food.put("note", order.getFoodTemp().get(i).getNote());
+				
+				foods.add(food);
+			}
+			update.put("foods", foods);
+			
+			root.put(""+order.getOrderId(), update);
+			FileWriter file = new FileWriter(billTem);
+			file.write(root.toJSONString());
+			file.flush();
+			file.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
