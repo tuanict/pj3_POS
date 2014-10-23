@@ -176,13 +176,18 @@ public class DatabaseSource implements SqliteAPIs{
 		ContentValues values = new ContentValues();
 		
 		boolean ok = false;
-		
-		values.put(dHelper.COLUMN_E_NAME,user.getE_name());
-		values.put(dHelper.COLUMN_E_EMAIL, user.getE_email());
-		values.put(dHelper.COLUMN_E_PASS, user.getE_pass());
-		values.put(dHelper.COLUMN_E_IMAGE, user.getE_image());
-		values.put(dHelper.COLUMN_E_PHONE, user.getE_phone_number());
-		values.put(dHelper.COLUMN_E_POSITION, user.getPOSITION_p_id());
+		if(user.getE_name() != null)
+			values.put(dHelper.COLUMN_E_NAME,user.getE_name());
+		if(user.getE_email() != null)
+			values.put(dHelper.COLUMN_E_EMAIL, user.getE_email());
+		if(user.getE_pass() != null)
+			values.put(dHelper.COLUMN_E_PASS, user.getE_pass());
+		if(user.getE_image() != null)
+			values.put(dHelper.COLUMN_E_IMAGE, user.getE_image());
+		if(user.getE_phone_number() != 0)
+			values.put(dHelper.COLUMN_E_PHONE, user.getE_phone_number());
+		if(user.getPOSITION_p_id() != 0)
+			values.put(dHelper.COLUMN_E_POSITION, user.getPOSITION_p_id());
 		try{
 			int result = db.update(dHelper.TABLE_EMPLOYEE, values,
 					dHelper.COLUMN_E_ID + " = ?",
