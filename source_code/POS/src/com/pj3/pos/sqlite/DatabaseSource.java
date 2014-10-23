@@ -8,8 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -316,17 +319,60 @@ public class DatabaseSource implements SqliteAPIs{
 		}
 		return menus;
 	}
+	
+	private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+	}
 
 	@Override
 	public int createBill(Bill bill) {
+		SQLiteDatabase db = dHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
 		
-		return 0;
+		values.put(dHelper.COLUMN_B_COUNT, bill.getB_count());
+		values.put(dHelper.COLUMN_B_TIME_STAMP, this.getDateTime());
+		
+		int billId = (int) db.insert(dHelper.TABLE_BILL, null, values);
+		return billId;
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Date convertTime(String time){
+		Date date = new Date();
+		String[] splitTime = time.split(" ");
+		String[] splitDate = splitTime[0].split("-");
+		String[] splitHour  = splitTime[1].split(":");
+		
+		date.setYear(Integer.parseInt(splitDate[0]));
+		date.setMonth(Integer.parseInt(splitDate[1]));
+		date.setDate(Integer.parseInt(splitDate[2]));
+		
+		date.setHours(Integer.parseInt(splitHour[0]));
+		date.setMinutes(Integer.parseInt(splitHour[1]));
+		date.setSeconds(Integer.parseInt(splitHour[2]));
+		
+		return date;
 	}
 
 	@Override
 	public Bill getBill(int billId) {
-		// TODO Auto-generated method stub
-		return null;
+		Bill bill = new Bill();
+		SQLiteDatabase db = dHelper.getReadableDatabase();
+		String query = "SELECT * FROM " + dHelper.TABLE_BILL + "WHERE "
+				+ dHelper.COLUMN_B_ID + " = " + billId;
+		Log.e(dHelper.LOG, query);
+		Cursor c = db.rawQuery(query, null);
+		if(c != null)
+			c.moveToFirst();
+		bill.setB_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_B_ID)));
+		bill.setB_count(c.getInt(c.getColumnIndex(dHelper.COLUMN_B_COUNT)));
+		String time = c.getString(c.getColumnIndexOrThrow(dHelper.COLUMN_B_TIME_STAMP));
+		bill.setB_time_stamp(this.convertTime(time));
+		
+		return bill;
 	}
 	
 	@Override
@@ -344,12 +390,27 @@ public class DatabaseSource implements SqliteAPIs{
 				Bill bill = new Bill();
 				bill.setB_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_B_ID)));
 				bill.setB_count(c.getInt(c.getColumnIndex(dHelper.COLUMN_B_COUNT)));
-//				bill.setB_time_stamp(c.getString(c.getColumnIndexOrThrow(dHelper.COLUMN_B_TIME_STAMP)));
+				String time = c.getString(c.getColumnIndexOrThrow(dHelper.COLUMN_B_TIME_STAMP));
+				bill.setB_time_stamp(this.convertTime(time));
 				
 				bills.add(bill);
 			}while(c.moveToNext());
 		}
 		return bills;
+	}
+	
+	@Override
+	public boolean deleteBill(int billId) {
+		SQLiteDatabase db = dHelper.getWritableDatabase();
+		boolean ok = false;
+		try{
+			db.delete(dHelper.TABLE_BILL, dHelper.COLUMN_B_ID + " = ?",
+					new String[] { String.valueOf(billId) });
+			ok = true;
+		}catch(Exception e){
+			ok = false;
+		}
+		return ok;
 	}
 
 	@Override
@@ -498,5 +559,4 @@ public class DatabaseSource implements SqliteAPIs{
 		}
 		return null;
 	}
-	
 }

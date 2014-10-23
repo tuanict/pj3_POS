@@ -123,6 +123,13 @@ public interface SqliteAPIs {
 	 */
 	public List<Bill> getAllBill();
 	
+	/**
+	 * delete bill on server
+	 * @param billId
+	 * @return true if success or false if fail
+	 */
+	public boolean deleteBill(int billId);
+	
 	//BILL ACTION TEMPORARY
 	/**
 	 * Create bill temporary

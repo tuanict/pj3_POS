@@ -108,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ TABLE_BILL + "("
 			+ COLUMN_B_ID + "INT AUTO INCREMENT NOT NULL, "
 			+ COLUMN_B_COUNT + "INT NOT NULL, "
-			+ COLUMN_B_TIME_STAMP + "DATETIME NOT NULL, "
+			+ COLUMN_B_TIME_STAMP + "VARCHAR(30) NOT NULL, "
 			+ "PRIMARY KEY (b_id)";
 	
 	//MENU table create statement
