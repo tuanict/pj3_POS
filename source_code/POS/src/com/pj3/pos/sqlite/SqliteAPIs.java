@@ -8,6 +8,7 @@ import java.util.List;
 import com.pj3.pos.res_public.Bill;
 import com.pj3.pos.res_public.Employee;
 import com.pj3.pos.res_public.Food;
+import com.pj3.pos.res_public.FoodStatistic;
 import com.pj3.pos.res_public.Order;
 
 /**
@@ -159,4 +160,24 @@ public interface SqliteAPIs {
 	 */
 	public Order getBillTemp(int billId);
 	
+	//Food statistic
+	/**
+	 * new cooking status
+	 * @param foodStatistic
+	 * @return 
+	 */
+	public int createFoodStatistic(FoodStatistic foodStatistic);
+	
+	/**
+	 * get all cooking order
+	 * @return list food statistic
+	 */
+	public List<FoodStatistic> getCookingOrder();
+	
+	/**
+	 * Update food statistic on server
+	 * @param fStatistic
+	 * @return true if success or false if fail
+	 */
+	public boolean updateFoodStatus( FoodStatistic fStatistic);
 }

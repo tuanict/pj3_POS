@@ -29,6 +29,7 @@ import android.util.Log;
 import com.pj3.pos.res_public.Bill;
 import com.pj3.pos.res_public.Employee;
 import com.pj3.pos.res_public.Food;
+import com.pj3.pos.res_public.FoodStatistic;
 import com.pj3.pos.res_public.FoodTemprary;
 import com.pj3.pos.res_public.Order;
 
@@ -563,5 +564,63 @@ public class DatabaseSource implements SqliteAPIs{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	@Override
+	public int createFoodStatistic(FoodStatistic foodStatistic) {
+		SQLiteDatabase db = dHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		
+		values.put(dHelper.COLUMN_F_COUNT, foodStatistic.getF_count());
+		values.put(dHelper.COLUMN_F_B_ID, foodStatistic.getF_b_id());
+		values.put(dHelper.COLUMN_F_M_ID, foodStatistic.getF_m_id());
+		values.put(dHelper.COLUMN_FBU, foodStatistic.getFpu());
+		
+		
+		//insert row
+		int fId = (int) db.insert(dHelper.TABLE_MENU, null, values);
+		return fId;
+	}
+	@Override
+	public List<FoodStatistic> getCookingOrder() {
+		List<FoodStatistic> foods = new ArrayList<FoodStatistic>();
+		String query = "SELECT * FROM " + dHelper.TABLE_FOODSTATISTIC;
+		Log.e(dHelper.LOG,query);
+		
+		SQLiteDatabase db = dHelper.getReadableDatabase();
+		Cursor c = db.rawQuery(query, null);
+		
+		// looping through all rows and adding to list
+		if(c.moveToFirst()){
+			do{
+				FoodStatistic foodStatistic = new FoodStatistic();
+				foodStatistic.setF_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_ID)));
+				foodStatistic.setF_count(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_COUNT)));
+				foodStatistic.setF_b_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_B_ID)));
+				foodStatistic.setF_m_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_M_ID)));
+				foodStatistic.setFpu(c.getInt(c.getColumnIndex(dHelper.COLUMN_FBU)));
+				
+				foods.add(foodStatistic);
+			}while(c.moveToNext());
+		}
+		return foods;
+	}
+	@Override
+	public boolean updateFoodStatus(FoodStatistic fStatistic) {
+		SQLiteDatabase db = dHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		
+		values.put(dHelper.COLUMN_F_COUNT, fStatistic.getF_count());
+		values.put(dHelper.COLUMN_F_B_ID, fStatistic.getF_b_id());
+		values.put(dHelper.COLUMN_F_M_ID, fStatistic.getF_m_id());
+		values.put(dHelper.COLUMN_FBU, fStatistic.getFpu());
+		
+		try{
+			db.update(dHelper.TABLE_FOODSTATISTIC, values,
+					dHelper.COLUMN_F_ID + " = ? ",
+					new String[] { String.valueOf(fStatistic.getF_id()) });
+			return true;
+		}catch(Exception e){
+			return false;
+		}
 	}
 }
