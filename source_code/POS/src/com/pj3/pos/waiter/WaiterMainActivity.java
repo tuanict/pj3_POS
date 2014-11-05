@@ -91,19 +91,19 @@ public class WaiterMainActivity extends Activity {
 		TabHost.TabSpec spec;
 		spec = tabhost.newTabSpec("spec1");
 		spec.setContent(R.id.tab1);
-		spec.setIndicator("",
-				this.getResources().getDrawable(R.drawable.notification));
+//		spec.setIndicator("",
+//				this.getResources().getDrawable(R.drawable.notification));
 		tabhost.addTab(spec);
 
 		spec = tabhost.newTabSpec("spec2");
 		spec.setContent(R.id.tab2);
-		spec.setIndicator("", this.getResources().getDrawable(R.drawable.order));
+//		spec.setIndicator("", this.getResources().getDrawable(R.drawable.order));
 
 		tabhost.addTab(spec);
 
 		spec = tabhost.newTabSpec("spec3");
 		spec.setContent(R.id.tab3);
-		spec.setIndicator("", this.getResources().getDrawable(R.drawable.bill));
+//		spec.setIndicator("", this.getResources().getDrawable(R.drawable.bill));
 		tabhost.addTab(spec);
 		tabhost.setCurrentTab(1);
 	}
